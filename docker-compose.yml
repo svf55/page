@@ -1,0 +1,28 @@
+version: '2'
+services:
+  db:
+    image: postgres:10.1
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+  runserver:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    entrypoint: /page/docker-entrypoint.sh
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    volumes:
+      - .:/page
+  autotests:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    entrypoint: /page/test-entrypoint.sh
+    depends_on:
+      - db
+    volumes:
+      - .:/page
+volumes:
+  postgres_data:

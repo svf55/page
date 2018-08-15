@@ -1,0 +1,23 @@
+[
+  {
+    "model": "pages.page",
+    "pk": 1,
+    "fields": {
+      "title": "page 1"
+    }
+  },
+  {
+    "model": "pages.page",
+    "pk": 2,
+    "fields": {
+      "title": "page 2"
+    }
+  },
+  {
+    "model": "pages.page",
+    "pk": 3,
+    "fields": {
+      "title": "page 3"
+    }
+  }
+]
