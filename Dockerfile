@@ -11,3 +11,5 @@ RUN pip install psycopg2
 RUN pip install requests
 
 RUN pip install djangorestframework
+
+RUN pip install django-model-utils

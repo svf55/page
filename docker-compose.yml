@@ -22,6 +22,7 @@ services:
     entrypoint: /page/test-entrypoint.sh
     depends_on:
       - db
+      - runserver
     volumes:
       - .:/page
 volumes:

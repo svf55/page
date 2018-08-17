@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from model_utils.managers import InheritanceManager
 
 
 class Content(models.Model):
@@ -8,12 +9,15 @@ class Content(models.Model):
     counter = models.IntegerField('Счетчик просмотров', default=0, validators=[MinValueValidator(0)])
     weight = models.IntegerField(default=0)
 
+    objects = InheritanceManager()
+
     def __str__(self):
         return '{}'.format(self.title)
 
 
 class Text(Content):
     content = models.TextField('Контент текста', default='')
+
 
     class Meta:
         verbose_name = 'Текст'
@@ -23,6 +27,7 @@ class Text(Content):
 class Video(Content):
     url = models.URLField('Ссылка на файл')
 
+
     class Meta:
         verbose_name = 'Видео-файл'
         verbose_name_plural = 'Видео-файлы'
@@ -30,6 +35,7 @@ class Video(Content):
 
 class Audio(Content):
     url = models.URLField('Ссылка на файл')
+
 
     class Meta:
         verbose_name = 'Аудио-файл'
