@@ -12,9 +12,9 @@ class PageViewSet(viewsets.ModelViewSet):
         pk = self.request.parser_context['kwargs']['pk']
 
         with transaction.atomic():
-            cursor = connection.cursor()
-            cursor.execute('SET LOCAL synchronous_commit TO OFF')
-            Content.objects.filter(page_id=pk).update(counter=F('counter') + 1)
+            content_qs = Content.objects.filter(page_id=pk)
+            len(content_qs.order_by('id').select_for_update())
+            content_qs.update(counter=F('counter') + 1)
 
         return super().retrieve(request, *args, **kwargs)
 

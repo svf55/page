@@ -27,7 +27,7 @@ class PageSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_contents(obj):
-        objects = Content.objects.filter(page=obj).select_subclasses()
+        objects = Content.objects.filter(page=obj).order_by('id').select_subclasses()
         objects_serialize = ContentSerializer(objects, many=True).data
 
         for i, obj_srlz in enumerate(objects_serialize):
