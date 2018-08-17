@@ -13,3 +13,5 @@ RUN pip install requests
 RUN pip install djangorestframework
 
 RUN pip install django-model-utils
+
+RUN pip install factory_boy
