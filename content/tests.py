@@ -1,5 +1,6 @@
 from rest_framework.test import APITestCase
 from content.models import Audio, Text, Video
+from page import celery
 from pages.tests_factories import PageFactory, AudioFactory, TextFactory, VideoFactory
 
 
@@ -9,6 +10,7 @@ class TestContent(APITestCase):
         """
         Ensure that the view count is increased by 1.
         """
+        celery.conf.task_always_eager = True
 
         page = PageFactory.create(title='page with text, audio')
         text = TextFactory.create(page=page)
@@ -20,7 +22,7 @@ class TestContent(APITestCase):
 
         response = self.client.get('/api/v1/pages/{}/'.format(page.id))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(Text.objects.get(id=text.id).counter, text_counter + 1)
-        self.assertEqual(Video.objects.get(id=video.id).counter, video_counter + 1)
-        self.assertEqual(Audio.objects.get(id=audio.id).counter, audio_counter + 1)
+        self.assertEqual(Text.objects.get(page=page).counter, text_counter + 1)
+        self.assertEqual(Video.objects.get(page=page).counter, video_counter + 1)
+        self.assertEqual(Audio.objects.get(page=page).counter, audio_counter + 1)
 

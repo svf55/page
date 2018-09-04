@@ -4,7 +4,7 @@ import time
 import random
 
 
-def measure_api_pages(n=1000, w=10, pages=(1, 2, 3)):
+def measure_api_pages(n=100, w=2, pages=(1, 2, 3)):
     def worker(page):
         t1 = time.time()
         r = requests.get('http://localhost:8000/api/v1/pages/{}/'.format(page))
@@ -21,5 +21,5 @@ def measure_api_pages(n=1000, w=10, pages=(1, 2, 3)):
 
 
 if __name__ == '__main__':
-    measure_api_pages(pages=[1])
+    measure_api_pages(1000, pages=[1])
 

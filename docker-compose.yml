@@ -8,22 +8,36 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
-    entrypoint: /page/docker-entrypoint.sh
     ports:
       - "8000:8000"
-    depends_on:
+    links:
       - db
+      - redis
+    entrypoint: /page/docker-entrypoint.sh
     volumes:
       - .:/page
+  redis:
+    image: redis:latest
+    ports:
+     - '6379:6379'
+  celery:
+    build: .
+    command: celery -A page worker --loglevel=info
+    volumes:
+      - .:/page
+    links:
+      - db
+      - redis
   autotests:
     build:
       dockerfile: Dockerfile
       context: .
-    entrypoint: /page/test-entrypoint.sh
     depends_on:
       - db
       - runserver
+    entrypoint: /page/test-entrypoint.sh
     volumes:
       - .:/page
 volumes:
   postgres_data:
+

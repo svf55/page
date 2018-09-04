@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from celery.schedules import crontab
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -40,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'pages',
     'content',
+    'celery',
 ]
 
 MIDDLEWARE = [
@@ -131,5 +134,18 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 2,
+}
+
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+CELERY_TASK_RESULT_EXPIRES = 2*86400  # 2 days
+CELERY_SEND_EVENTS = True
+
+CELERY_BEAT_SCHEDULE = {
+    # 'hello': {
+    #     'task': 'pages.tasks.hello',
+    #     'schedule': crontab()
+    # }
+
 }
 
